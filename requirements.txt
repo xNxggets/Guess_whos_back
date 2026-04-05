@@ -1,0 +1,7 @@
+# Les dépendances nécessaires pour exécuter le bot Discord Guess Who's Back
+
+discord.py>=2.3.0
+python-dotenv>=1.0.0
+aiohttp>=3.8.0
+pytz>=2023.3
+emoji>=2.6.0  
