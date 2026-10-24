@@ -95,6 +95,7 @@ Le bot utilise le système de Cogs (extensions) de discord.py pour organiser le 
 
 cogs/
 ├── 🛡️ moderation.py # Commandes de modération
+├── 🏠 channels.py # Création et suppression de salons et catégories
 ├── 🎫 tickets.py # Système de tickets
 ├── 🔧 utilities.py # Utilitaires avec APIs
 ├── 🎭 roles.py # Gestion des rôles
@@ -151,3 +152,7 @@ cogs/
    ```
 
 Les sauvegardes restent dans `data/data.json` sur la machine qui exécute le bot. Elles ne sont pas envoyées à GitHub.
+
+### **Gestion des salons**
+
+Les membres ayant la permission **Gérer les salons** peuvent utiliser `/creer_salon_textuel`, `/creer_salon_vocal` et `/creer_categorie`. Les commandes `/supprimer_salon_textuel`, `/supprimer_salon_vocal` et `/supprimer_categorie` demandent une confirmation avant suppression. Le bot doit également avoir la permission **Gérer les salons**.

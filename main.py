@@ -25,6 +25,7 @@ bot = commands.Bot(
 # Liste des cogs à charger
 COGS = [
     'cogs.moderation',
+    'cogs.channels',
     'cogs.tickets',
     'cogs.utilities',
     'cogs.roles',
@@ -135,6 +136,7 @@ async def aide(interaction: discord.Interaction):
     # Catégories avec les noms des commandes correspondantes 
     categories = {
         "🛡️ Modération": ["avertir", "avertissements", "effacer_avertissements", "mute", "demute", "expulser", "bannir", "mode_lent", "nettoyer"],
+        "🏠 Salons": ["creer_salon_textuel", "creer_salon_vocal", "creer_categorie", "supprimer_salon_textuel", "supprimer_salon_vocal", "supprimer_categorie"],
         "🎫 Tickets": ["creer_ticket", "fermer_ticket"],
         "🔧 Utilitaires": ["rappel", "calculer"],
         "🎭 Rôles": ["role_auto_ajouter", "role_auto_retirer", "role_auto_liste"],
