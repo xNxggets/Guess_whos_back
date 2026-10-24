@@ -82,7 +82,7 @@ class Channels(commands.Cog):
         if not await self._verifier_gestion_salons(interaction):
             return
 
-        if categorie is not None and categorie.guild_id != interaction.guild_id:
+        if categorie is not None and categorie.guild.id != interaction.guild.id:
             await interaction.response.send_message(
                 "La catégorie choisie doit appartenir à ce serveur.", ephemeral=True
             )
