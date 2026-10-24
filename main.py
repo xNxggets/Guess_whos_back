@@ -3,12 +3,13 @@
 import discord
 import os
 import asyncio
+from pathlib import Path
 from dotenv import load_dotenv
 from discord.ext import commands
 import traceback
 
 # Chargement des variables d'environnement
-load_dotenv()
+load_dotenv(Path(__file__).with_name(".env"))
 print("Lancement du bot...")
 
 # Configuration des intents

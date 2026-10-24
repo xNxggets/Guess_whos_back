@@ -110,7 +110,8 @@ cogs/
 
 ### **Système de stockage**
 - **`data/storage.py`** : Classe Singleton pour gérer les données
-- **`data.json`** : Fichier JSON pour la persistance des données
+- **`data/data.json`** : Fichier local de persistance, ignoré par Git car il contient des données de serveur et de membres
+- **`.env`** : Configuration locale contenant le token Discord, ignorée par Git
 - Stockage en mémoire avec sauvegarde automatique
 
 ### **Fonctions utilitaires**
@@ -125,29 +126,28 @@ cogs/
 - Compte Discord Developer
 - Token de bot Discord
 
-### **Étapes d'installation**
+### **Étapes d'installation (Windows / PowerShell)**
 
-1. **Cloner ou télécharger les fichiers**
-```bash
-git clone [URL_DU_REPO]
-cd [NOM_DU_PROJET]
+1. Cloner le dépôt et entrer dans son dossier :
+   ```powershell
+   git clone https://github.com/xNxggets/Guess_whos_back.git
+   cd Guess_whos_back
+   ```
+2. Créer et activer un environnement Python, puis installer les dépendances :
+   ```powershell
+   py -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   python -m pip install -r requirements.txt
+   ```
+3. Créer le fichier local `.env` à partir du modèle et y renseigner le token Discord :
+   ```powershell
+   Copy-Item .env.example .env
+   notepad .env
+   ```
+4. Dans le Discord Developer Portal, activer les intents **Presence**, **Server Members** et **Message Content**.
+5. Démarrer le bot :
+   ```powershell
+   python main.py
+   ```
 
-pip install discord.py python-dotenv aiohttp pytz emoji
-
-Fichier .env pour les API :
-
-DISCORD_TOKEN=votre_token_ici
-GOOGLE_TRANSLATE_KEY=votre_clé_api_optionnelle
-OPENWEATHERMAP_KEY=votre_clé_api_optionnelle
-
-Configurer le bot sur Discord Developer Portal
-
-    Activer les intents :
-
-        ✅ PRESENCE INTENT
-
-        ✅ SERVER MEMBERS INTENT
-
-        ✅ MESSAGE CONTENT INTENT
-
-Lancez le bot : python main.py
+Les sauvegardes restent dans `data/data.json` sur la machine qui exécute le bot. Elles ne sont pas envoyées à GitHub.

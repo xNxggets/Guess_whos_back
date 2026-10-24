@@ -1,10 +1,11 @@
 # Partie du bot gérant le stockage et la persistance des données utilisateur et serveur.
 
 import json
-import os
+from pathlib import Path
 
 class Storage:
     def __init__(self):
+        self.data_file = Path(__file__).with_name("data.json")
         self.anniversaires = {}
         self.niveaux = {}
         self.avertissements = {}
@@ -30,8 +31,8 @@ class Storage:
     def load_data(self):
         """Charge les données depuis le fichier JSON"""
         try:
-            if os.path.exists("data.json"):
-                with open("data.json", "r", encoding="utf-8") as f:
+            if self.data_file.exists():
+                with self.data_file.open("r", encoding="utf-8") as f:
                     data = json.load(f)
                     
                     # Charger chaque dictionnaire
@@ -80,7 +81,7 @@ class Storage:
                 "messages_programmes": self.messages_programmes
             }
             
-            with open("data.json", "w", encoding="utf-8") as f:
+            with self.data_file.open("w", encoding="utf-8") as f:
                 json.dump(data, f, indent=4, default=str)
                 
         except Exception as e:
