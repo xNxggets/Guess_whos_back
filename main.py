@@ -124,47 +124,161 @@ async def on_app_command_error(interaction: discord.Interaction, error):
 # Commande d'aide personnalisée 
 @bot.tree.command(name="aide", description="Affiche toutes les commandes disponibles")
 async def aide(interaction: discord.Interaction):
-    """Commande d'aide complète"""
-    embed = discord.Embed(
-        title="📖 Guide complet du bot",
-        description="Voici toutes les commandes disponibles organisées par catégorie\n Utilisez `/` pour les commandes",
-        color=discord.Color.blue()
-    )
-    
-    # Récupérer toutes les commandes slash
-    slash_commands = []
-    for cmd in bot.tree.get_commands():
-        if hasattr(cmd, 'name'):
-            slash_commands.append(cmd.name)
-    
-    # Catégories avec les noms des commandes correspondantes 
-    categories = {
-        "🛡️ Modération": ["avertir", "avertissements", "effacer_avertissements", "mute", "demute", "expulser", "bannir", "mode_lent", "nettoyer"],
-        "🏠 Salons": ["creer_salon_textuel", "creer_salon_vocal", "creer_categorie", "supprimer_salon_textuel", "supprimer_salon_vocal", "supprimer_categorie"],
-        "🎫 Tickets": ["creer_ticket", "fermer_ticket"],
-        "🔧 Utilitaires": ["rappel", "calculer"],
-        "🎭 Rôles": ["role_auto_ajouter", "role_auto_retirer", "role_auto_liste"],
-        "📊 Statistiques": ["niveau", "classement", "statistiques"],
-        "🎉 Événements": ["definir_anniversaire", "voir_anniversaire", "concours", "concours_relancer"],
-        "📝 Contenu": ["suggestion", "creer_note", "voir_note", "liste_note", "supprimer_note"],
-        "🎨 Créatif": ["citation", "nom_aleatoire", "couleur_aleatoire"],
-        "ℹ️ Informations": ["info_serveur", "info_membre", "avatar", "ping", "youtube"],
-        "🎮 Fun": ["de", "pile_ou_face", "boule_magique", "sondage", "emoji_aleatoire"]
+    """Affiche les commandes publiques et le panneau staff selon les permissions."""
+    commandes_membres = [
+        ("🎫 Tickets", [
+            ("creer_ticket", "Ouvre un ticket privé; un seul ticket ouvert par membre."),
+            ("fermer_ticket", "Ferme le ticket courant si tu l’as créé ou si tu es administrateur."),
+        ]),
+        ("🔧 Utilitaires", [
+            ("rappel", "Programme un rappel personnel, de 1 minute à 7 jours."),
+            ("calculer", "Calcule une expression avec les opérations +, -, * et /."),
+        ]),
+        ("🎭 Rôles", [
+            ("role_auto_liste", "Affiche les rôles qui seront attribués aux nouveaux membres."),
+        ]),
+        ("📊 Statistiques", [
+            ("niveau", "Affiche ton niveau et ton expérience."),
+            ("classement", "Affiche le classement des membres selon leur expérience."),
+            ("statistiques", "Affiche les statistiques générales du serveur."),
+        ]),
+        ("🎉 Anniversaires", [
+            ("definir_anniversaire", "Enregistre ton jour et ton mois d’anniversaire."),
+            ("voir_anniversaire", "Affiche l’anniversaire que tu as enregistré."),
+        ]),
+        ("📝 Contenu", [
+            ("suggestion", "Publie une suggestion dans le salon prévu à cet effet."),
+            ("creer_note", "Crée une note partagée sur le serveur."),
+            ("voir_note", "Affiche une note partagée par son nom."),
+            ("liste_note", "Affiche les notes partagées du serveur."),
+        ]),
+        ("🛡️ Modération", [
+            ("liste_mots_interdits", "Affiche la liste des mots filtrés automatiquement."),
+        ]),
+        ("🎨 Créatif", [
+            ("citation", "Affiche une citation inspirante choisie au hasard."),
+            ("nom_aleatoire", "Génère un nom selon le type demandé."),
+            ("couleur_aleatoire", "Génère une couleur aléatoire avec son code."),
+        ]),
+        ("ℹ️ Informations", [
+            ("info_serveur", "Affiche les informations du serveur actuel."),
+            ("info_membre", "Affiche les informations d’un membre."),
+            ("avatar", "Affiche l’avatar d’un membre en grand format."),
+            ("ping", "Affiche la latence du bot."),
+            ("youtube", "Affiche le lien de la chaîne YouTube du créateur."),
+        ]),
+        ("🎮 Fun", [
+            ("de", "Lance un dé; le nombre de faces peut être choisi."),
+            ("pile_ou_face", "Lance une pièce et affiche le résultat."),
+            ("boule_magique", "Répond à une question comme une boule magique."),
+            ("sondage", "Crée un sondage avec deux à cinq choix."),
+            ("emoji_aleatoire", "Affiche un emoji aléatoire, éventuellement d’une catégorie."),
+        ]),
+        ("📖 Aide", [
+            ("aide", "Affiche ce panneau et, si tu as les permissions staff, le panneau modération."),
+        ]),
+    ]
+
+    commandes_staff = [
+        ("🛡️ Modération", [
+            ("avertir", "Ajoute un avertissement à un membre avec une raison.", "moderate_members"),
+            ("avertissements", "Consulte en privé les avertissements d’un membre.", "moderate_members"),
+            ("effacer_avertissements", "Efface tous les avertissements d’un membre.", "administrator"),
+            ("mute", "Empêche temporairement un membre de parler, en minutes.", "moderate_members"),
+            ("demute", "Retire le mute temporaire d’un membre.", "moderate_members"),
+            ("expulser", "Expulse un membre du serveur.", "kick_members"),
+            ("bannir", "Bannit un membre du serveur.", "ban_members"),
+            ("mode_lent", "Règle le délai entre les messages d’un salon.", "manage_channels"),
+            ("nettoyer", "Supprime jusqu’à 100 messages du salon courant.", "manage_messages"),
+            ("ajouter_mot_interdit", "Ajoute un mot au filtre automatique du serveur.", "manage_guild"),
+            ("retirer_mot_interdit", "Retire un mot du filtre automatique du serveur.", "manage_guild"),
+            ("vider_mots_interdits", "Vide entièrement la liste des mots filtrés.", "administrator"),
+        ]),
+        ("🏠 Salons", [
+            ("creer_salon_textuel", "Crée un salon textuel, avec catégorie facultative.", "manage_channels"),
+            ("creer_salon_vocal", "Crée un salon vocal, avec catégorie facultative.", "manage_channels"),
+            ("creer_categorie", "Crée une catégorie de salons.", "manage_channels"),
+            ("supprimer_salon_textuel", "Supprime un salon textuel après confirmation.", "manage_channels"),
+            ("supprimer_salon_vocal", "Supprime un salon vocal après confirmation.", "manage_channels"),
+            ("supprimer_categorie", "Supprime une catégorie après confirmation; ses salons restent sur le serveur.", "manage_channels"),
+        ]),
+        ("🎭 Rôles", [
+            ("role_auto_ajouter", "Ajoute un rôle à la liste attribuée aux nouveaux membres.", "manage_roles"),
+            ("role_auto_retirer", "Retire un rôle de la liste des rôles automatiques.", "manage_roles"),
+        ]),
+        ("🎉 Concours", [
+            ("concours", "Lance un concours avec une durée et un nombre de gagnants.", "manage_guild"),
+            ("concours_relancer", "Relance le tirage d’un concours existant.", "manage_guild"),
+        ]),
+        ("📝 Notes", [
+            ("supprimer_note", "Supprime une note partagée; permission Gérer les messages requise.", "manage_messages"),
+        ]),
+    ]
+
+    permissions = getattr(interaction.user, "guild_permissions", discord.Permissions.none())
+    permissions_staff = {
+        permission
+        for _, commandes in commandes_staff
+        for _, _, permission in commandes
     }
-    
-    for category, commands in categories.items():
-        # Filtrer les commandes qui existent
-        available_commands = [f"`/{cmd}`" for cmd in commands if cmd in slash_commands]
-        if available_commands:
-            embed.add_field(
-                name=category,
-                value=" ".join(available_commands),
-                inline=False
+    est_staff = any(getattr(permissions, permission, False) for permission in permissions_staff)
+
+    def ajouter_categories(embed, categories):
+        commandes_disponibles = {
+            commande.name for commande in bot.tree.get_commands()
+        }
+        for categorie, commandes in categories:
+            lignes = [
+                f"`/{nom}` — {description}"
+                for nom, description in commandes
+                if nom in commandes_disponibles
+            ]
+            if lignes:
+                embed.add_field(name=categorie, value="\n".join(lignes), inline=False)
+
+    panneau_membres = discord.Embed(
+        title="📖 Aide — commandes membres",
+        description="Commandes disponibles sur le serveur. Utilise `/` pour les lancer.",
+        color=discord.Color.blue(),
+    )
+    ajouter_categories(panneau_membres, commandes_membres)
+    panneau_membres.add_field(
+        name="Commandes préfixées",
+        value="`!test` — vérifie que le bot répond.\n`!invite` — affiche le lien d’invitation du bot.",
+        inline=False,
+    )
+    panneau_membres.set_footer(text="Les commandes réservées au staff dépendent de tes permissions Discord.")
+
+    panneaux = [panneau_membres]
+    if est_staff:
+        commandes_autorisees = []
+        for categorie, commandes in commandes_staff:
+            visibles = [
+                (nom, description)
+                for nom, description, permission in commandes
+                if getattr(permissions, permission, False)
+            ]
+            if visibles:
+                commandes_autorisees.append((categorie, visibles))
+
+        panneau_staff = discord.Embed(
+            title="🛡️ Aide — modération et administration",
+            description="Ce panneau n’affiche que les commandes autorisées par tes permissions.",
+            color=discord.Color.orange(),
+        )
+        ajouter_categories(panneau_staff, commandes_autorisees)
+        if await bot.is_owner(interaction.user):
+            panneau_staff.add_field(
+                name="Commandes propriétaire",
+                value="`!recharger [cog]` — recharge un cog ou toutes les extensions.\n`!cogs` — affiche les extensions chargées.",
+                inline=False,
             )
-    
-    embed.set_footer(text=f"Bot créé par Noah • Total de : {len(slash_commands)} commandes utilisables")
-    
-    await interaction.response.send_message(embed=embed)
+        panneaux.append(panneau_staff)
+
+    await interaction.response.send_message(
+        embeds=panneaux,
+        ephemeral=est_staff,
+    )
 
 # Commande pour inviter le bot
 @bot.command(name="invite")
