@@ -1,12 +1,62 @@
 # Partie du bot gérant les commandes utilitaires telles que les rappels et la calculatrice.
 
 import discord
+import ast
+import math
 from discord import app_commands
 from discord.ext import commands
 import datetime
 import random
 from utils import create_embed
 from data.storage import storage
+
+
+def calculer_expression(expression: str):
+    """Évalue une expression arithmétique simple sans exécuter de code Python."""
+    if len(expression) > 100:
+        raise ValueError("Expression trop longue.")
+
+    arbre = ast.parse(expression, mode="eval")
+    if sum(1 for _ in ast.walk(arbre)) > 40:
+        raise ValueError("Expression trop complexe.")
+
+    limite = 1_000_000_000_000
+
+    def evaluer(noeud, profondeur=0):
+        if profondeur > 20:
+            raise ValueError("Expression trop complexe.")
+
+        if isinstance(noeud, ast.Expression):
+            resultat = evaluer(noeud.body, profondeur + 1)
+        elif isinstance(noeud, ast.Constant) and type(noeud.value) in (int, float):
+            resultat = noeud.value
+        elif isinstance(noeud, ast.UnaryOp) and isinstance(
+            noeud.op, (ast.UAdd, ast.USub)
+        ):
+            valeur = evaluer(noeud.operand, profondeur + 1)
+            resultat = valeur if isinstance(noeud.op, ast.UAdd) else -valeur
+        elif isinstance(noeud, ast.BinOp) and isinstance(
+            noeud.op, (ast.Add, ast.Sub, ast.Mult, ast.Div)
+        ):
+            gauche = evaluer(noeud.left, profondeur + 1)
+            droite = evaluer(noeud.right, profondeur + 1)
+            if isinstance(noeud.op, ast.Add):
+                resultat = gauche + droite
+            elif isinstance(noeud.op, ast.Sub):
+                resultat = gauche - droite
+            elif isinstance(noeud.op, ast.Mult):
+                resultat = gauche * droite
+            else:
+                resultat = gauche / droite
+        else:
+            raise ValueError("Seuls +, -, * et / sont autorisés.")
+
+        if not math.isfinite(resultat) or abs(resultat) > limite:
+            raise ValueError("Le résultat dépasse la limite autorisée.")
+        return resultat
+
+    return evaluer(arbre)
+
 
 class Utilities(commands.Cog):
     """Commandes utilitaires"""
@@ -41,24 +91,7 @@ class Utilities(commands.Cog):
     async def calculer(self, interaction: discord.Interaction, expression: str):
         """Effectuer un calcul"""
         try:
-            # Sécurité : n'autoriser que les opérations mathématiques de base
-            caracteres_autorises = "0123456789+-*/()., "
-            if not all(c in caracteres_autorises for c in expression):
-                await interaction.response.send_message(
-                    "❌ Expression invalide ! Utilisez seulement des chiffres et + - * / ( ) .",
-                    ephemeral=True
-                )
-                return
-            
-            # Éviter les calculs dangereux
-            if len(expression) > 100:
-                await interaction.response.send_message(
-                    "❌ Expression trop longue !",
-                    ephemeral=True
-                )
-                return
-            
-            resultat = eval(expression)
+            resultat = calculer_expression(expression)
             
             embed = discord.Embed(
                 title="🔢 Calculatrice",
@@ -68,9 +101,10 @@ class Utilities(commands.Cog):
             embed.add_field(name="Résultat", value=f"```{resultat}```", inline=False)
             
             await interaction.response.send_message(embed=embed)
-        except Exception as e:
+        except (ArithmeticError, SyntaxError, TypeError, ValueError, OverflowError):
             await interaction.response.send_message(
-                f"❌ Erreur de calcul : {str(e)}",
+                "❌ Expression invalide ou résultat hors limites. Utilise seulement "
+                "les nombres et les opérations +, -, * et /.",
                 ephemeral=True
             )
 

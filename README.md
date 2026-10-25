@@ -1,158 +1,85 @@
-# 🤖 Bot Discord Polyvalent
+# Guess Who's Back — bot Discord
 
-Un bot Discord complet et modulaire développé en Python avec la bibliothèque `discord.py`. Ce bot offre plus de 40 commandes organisées en 10 catégories différentes, avec un système de stockage de données, des tâches automatisées et des fonctionnalités avancées.
+Bot Discord modulaire en Python avec `discord.py`. Il utilise des commandes slash, des événements de serveur et un fichier JSON local pour conserver les données.
 
-## 📋 Table des matières
-- [Fonctionnalités](#-fonctionnalités)
-- [Architecture du code](#-architecture-du-code)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Utilisation](#-utilisation)
-- [Système de stockage](#-système-de-stockage)
-- [Structure des fichiers](#-structure-des-fichiers)
-- [Personnalisation](#-personnalisation)
-- [Dépannage](#-dépannage)
-- [Contribution](#-contribution)
+## Fonctionnalités
 
-## ✨ Fonctionnalités
+- Modération : avertissements, mute temporaire, expulsion, bannissement, mode lent, nettoyage des messages et filtre de mots interdits.
+- Salons : création et suppression confirmée de salons textuels, vocaux et de catégories.
+- Tickets privés avec fermeture par bouton ou commande.
+- Rôles automatiques attribués aux nouveaux membres.
+- Niveaux et statistiques d'activité.
+- Anniversaires, concours et rappels.
+- Suggestions, notes partagées, sondages et commandes de divertissement.
+- Messages de bienvenue/départ, réponses automatiques et journalisation de suppressions.
 
-### 🛡️ **Modération (9 commandes)**
-- **`/avertir`** : Avertir un membre avec une raison
-- **`/avertissements`** : Voir les avertissements d'un membre
-- **`/effacer_avertissements`** : Supprimer tous les avertissements d'un membre
-- **`/mute`** : Muter temporairement un membre
-- **`/demute`** : Retirer le mute d'un membre
-- **`/expulser`** : Expulser un membre du serveur
-- **`/bannir`** : Bannir un membre du serveur
-- **`/mode_lent`** : Activer/désactiver le mode lent
-- **`/nettoyer`** : Supprimer plusieurs messages
+## Commandes slash
 
-### 🎫 **Tickets (2 commandes)**
-- **`/creer_ticket`** : Créer un canal privé de support
-- **`/fermer_ticket`** : Fermer un ticket (avec bouton de fermeture)
+| Catégorie | Commandes |
+| --- | --- |
+| Modération | `/avertir`, `/avertissements`, `/effacer_avertissements`, `/mute`, `/demute`, `/expulser`, `/bannir`, `/mode_lent`, `/nettoyer`, `/ajouter_mot_interdit`, `/retirer_mot_interdit`, `/liste_mots_interdits`, `/vider_mots_interdits` |
+| Salons | `/creer_salon_textuel`, `/creer_salon_vocal`, `/creer_categorie`, `/supprimer_salon_textuel`, `/supprimer_salon_vocal`, `/supprimer_categorie` |
+| Tickets | `/creer_ticket`, `/fermer_ticket` |
+| Utilitaires | `/rappel`, `/calculer` |
+| Rôles | `/role_auto_ajouter`, `/role_auto_retirer`, `/role_auto_liste` |
+| Statistiques | `/niveau`, `/classement`, `/statistiques` |
+| Événements | `/definir_anniversaire`, `/voir_anniversaire`, `/concours`, `/concours_relancer` |
+| Contenu | `/suggestion`, `/creer_note`, `/voir_note`, `/liste_note`, `/supprimer_note` |
+| Créatif | `/citation`, `/nom_aleatoire`, `/couleur_aleatoire` |
+| Informations | `/info_serveur`, `/info_membre`, `/avatar`, `/ping`, `/youtube` |
+| Fun | `/de`, `/pile_ou_face`, `/boule_magique`, `/sondage`, `/emoji_aleatoire` |
+| Aide | `/aide` |
 
-### 🔧 **Utilitaires (4 commandes)**
-- **`/rappel`** : Programmer un rappel
-- **`/calculer`** : Calculatrice mathématique
-- **`/traduire`** : Traduction de texte (avec API optionnelle)
-- **`/meteo`** : Météo d'une ville (avec API optionnelle)
+Les commandes préfixées par `!` sont aussi disponibles : `!invite`, `!test`. `!recharger` et `!cogs` sont réservées au propriétaire du bot.
 
-### 🎭 **Rôles (3 commandes)**
-- **`/role_auto_ajouter`** : Ajouter un rôle automatique
-- **`/role_auto_retirer`** : Retirer un rôle automatique
-- **`/role_auto_liste`** : Lister les rôles automatiques
+### Permissions
 
-### 📊 **Statistiques (3 commandes)**
-- **`/niveau`** : Voir son niveau et XP
-- **`/classement`** : Classement des membres par niveau
-- **`/statistiques`** : Statistiques du serveur
+Les commandes de modération vérifient la permission adaptée au rôle de la personne qui les utilise. La gestion des salons requiert **Gérer les salons** pour l'utilisateur et pour le bot. Les commandes de suppression demandent une confirmation. La fermeture d'un ticket est réservée à son créateur ou à un administrateur.
 
-### 🎉 **Événements (4 commandes)**
-- **`/definir_anniversaire`** : Définir sa date d'anniversaire
-- **`/voir_anniversaire`** : Voir sa date d'anniversaire
-- **`/concours`** : Créer un concours/giveaway
-- **`/concours_relancer`** : Retirer un gagnant de concours
+Accorde au bot seulement les permissions nécessaires aux fonctionnalités activées. Les commandes de modération ont notamment besoin des permissions Discord correspondantes (gérer les messages, modérer, expulser, bannir); les outils de salons, tickets et rôles nécessitent respectivement gérer les salons ou gérer les rôles.
 
-### 📝 **Contenu (5 commandes)**
-- **`/suggestion`** : Faire une suggestion
-- **`/creer_note`** : Créer une note partagée
-- **`/voir_note`** : Voir une note
-- **`/liste_note`** : Lister toutes les notes
-- **`/supprimer_note`** : Supprimer une note
+## Installation locale (Windows / PowerShell)
 
-### 🎨 **Créatif (3 commandes)**
-- **`/citation`** : Citation inspirante aléatoire
-- **`/nom_aleatoire`** : Générer un nom aléatoire
-- **`/couleur_aleatoire`** : Générer une couleur aléatoire
+Prérequis : Git et Python 3.10 ou plus récent.
 
-### ℹ️ **Informations (5 commandes)**
-- **`/info_serveur`** : Informations du serveur
-- **`/info_membre`** : Informations d'un membre
-- **`/avatar`** : Afficher l'avatar d'un membre
-- **`/ping`** : Latence du bot
-- **`/youtube`** : Lien vers la chaîne YouTube
+```powershell
+git clone https://github.com/xNxggets/Guess_whos_back.git
+cd Guess_whos_back
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env
+notepad .env
+```
 
-### 🎮 **Fun (5 commandes)**
-- **`/de`** : Lancer un dé
-- **`/pile_ou_face`** : Pile ou face avec animation
-- **`/boule_magique`** : Poser une question
-- **`/sondage`** : Créer un sondage
-- **`/emoji_aleatoire`** : Emoji aléatoire par catégorie
+Dans `.env`, renseigne le token du bot :
 
-### 🔄 **Fonctionnalités automatiques**
-- **Système de niveaux** : Gain d'XP par message
-- **Auto-modération** : Détection de mots interdits et majuscules
-- **Réponses automatiques** : Réponses aux salutations
-- **Bienvenue/départ** : Messages automatisés
-- **Auto-rôles** : Attribution automatique de rôles
-- **Logs** : Journal des messages supprimés
-- **Tâches périodiques** : Rappels, anniversaires, concours
+```dotenv
+DISCORD_TOKEN=colle_ton_token_ici
+```
 
-## 🏗️ Architecture du code
+Dans le Discord Developer Portal, active les intents privilégiés **Server Members**, **Message Content** et **Presence**. Le code active également les intents standards nécessaires aux événements de messages et de réactions.
 
-### **Structure modulaire (Cogs)**
-Le bot utilise le système de Cogs (extensions) de discord.py pour organiser le code :
+Démarre le bot depuis le dossier du projet :
 
-cogs/
-├── 🛡️ moderation.py # Commandes de modération
-├── 🏠 channels.py # Création et suppression de salons et catégories
-├── 🎫 tickets.py # Système de tickets
-├── 🔧 utilities.py # Utilitaires avec APIs
-├── 🎭 roles.py # Gestion des rôles
-├── 📊 stats.py # Statistiques et niveaux
-├── 🎉 events_cog.py # Événements et concours
-├── 📝 content.py # Suggestions et notes
-├── 🎨 creative.py # Commandes créatives
-├── ℹ️ info.py # Commandes d'information
-├── 🎮 fun.py # Commandes fun
-├── 🔄 events_handler.py # Gestionnaire d'événements
-└── ⏰ tasks.py # Tâches périodiques
+```powershell
+python main.py
+```
 
+Le bot synchronise ses commandes slash lors de sa connexion. Laisse le terminal ouvert pendant son exécution; `Ctrl+C` l'arrête.
 
-### **Système de stockage**
-- **`data/storage.py`** : Classe Singleton pour gérer les données
-- **`data/data.json`** : Fichier local de persistance, ignoré par Git car il contient des données de serveur et de membres
-- **`.env`** : Configuration locale contenant le token Discord, ignorée par Git
-- Stockage en mémoire avec sauvegarde automatique
+## Données et configuration
 
-### **Fonctions utilitaires**
-- **`utils.py`** : Fonctions helper pour les embeds, permissions, dates, emojis
-- Système d'emoji personnalisé avec mapping de noms
-- Formateurs de date sécurisés pour les fuseaux horaires
+- `main.py` démarre le bot et charge les extensions répertoriées dans `COGS`.
+- `cogs/` contient les commandes et gestionnaires d'événements.
+- `utils.py` regroupe les fonctions communes.
+- `data/storage.py` charge et sauvegarde les données.
+- `data/data.json` est créé et modifié localement. Il contient des identifiants et des données de membres/serveur : il est ignoré par Git et n'est pas fourni dans le dépôt.
+- `.env` contient le token Discord et est ignoré par Git. `.env.example` est le modèle sans secret.
+- `requirements.txt` liste les dépendances Python.
 
-## 📥 Installation
+Pour déployer le bot sur un hébergeur, configure `DISCORD_TOKEN` dans son gestionnaire de secrets et prévois un stockage persistant pour `data/data.json`. Ne place jamais le token dans le code, dans un commit ou dans les journaux.
 
-### **Prérequis**
-- Python 3.8 ou supérieur
-- Compte Discord Developer
-- Token de bot Discord
+## Sécurité
 
-### **Étapes d'installation (Windows / PowerShell)**
-
-1. Cloner le dépôt et entrer dans son dossier :
-   ```powershell
-   git clone https://github.com/xNxggets/Guess_whos_back.git
-   cd Guess_whos_back
-   ```
-2. Créer et activer un environnement Python, puis installer les dépendances :
-   ```powershell
-   py -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   python -m pip install -r requirements.txt
-   ```
-3. Créer le fichier local `.env` à partir du modèle et y renseigner le token Discord :
-   ```powershell
-   Copy-Item .env.example .env
-   notepad .env
-   ```
-4. Dans le Discord Developer Portal, activer les intents **Presence**, **Server Members** et **Message Content**.
-5. Démarrer le bot :
-   ```powershell
-   python main.py
-   ```
-
-Les sauvegardes restent dans `data/data.json` sur la machine qui exécute le bot. Elles ne sont pas envoyées à GitHub.
-
-### **Gestion des salons**
-
-Les membres ayant la permission **Gérer les salons** peuvent utiliser `/creer_salon_textuel`, `/creer_salon_vocal` et `/creer_categorie`. Les commandes `/supprimer_salon_textuel`, `/supprimer_salon_vocal` et `/supprimer_categorie` demandent une confirmation avant suppression. Le bot doit également avoir la permission **Gérer les salons**.
+Le token du bot donne accès à ses actions selon les permissions accordées sur les serveurs. Si le token a été publié, même brièvement, régénère-le dans le Discord Developer Portal et remplace sa valeur dans `.env` et sur l'hébergeur. Ajouter `.env` au `.gitignore` empêche les futurs ajouts Git, mais n'efface pas les anciens commits ni les copies déjà clonées.

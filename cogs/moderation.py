@@ -64,6 +64,9 @@ class Moderation(commands.Cog):
     @app_commands.describe(membre="Le membre dont voir les avertissements")
     async def avertissements(self, interaction: discord.Interaction, membre: discord.Member):
         """Voir les avertissements d'un membre"""
+        if not await verifier_permissions(interaction, "moderate_members"):
+            return
+
         warns_membre = storage.avertissements.get(membre.id, [])
         
         if not warns_membre:
@@ -271,7 +274,7 @@ class Moderation(commands.Cog):
                 color=discord.Color.green(),
                 fields=[("Mot retiré", f"`{mot_lower}`", False)]
             )
-            await interaction.response.send_message(embed=embed)
+            await interaction.response.send_message(embed=embed, ephemeral=True)
         else:
             await interaction.response.send_message(
                 f"❌ Le mot `{mot_lower}` n'est pas dans la liste des mots interdits.",

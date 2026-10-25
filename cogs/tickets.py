@@ -15,9 +15,28 @@ class Tickets(commands.Cog):
     
     @app_commands.command(name="creer_ticket", description="Créer un ticket de support")
     @app_commands.describe(sujet="Le sujet de votre ticket")
+    @app_commands.guild_only()
     async def creer_ticket(self, interaction: discord.Interaction, sujet: str):
         """Créer un ticket"""
         guilde = interaction.guild
+
+        bot_member = guilde.me
+        if bot_member is None or not bot_member.guild_permissions.manage_channels:
+            await interaction.response.send_message(
+                "Le bot doit avoir la permission **Gérer les salons**.",
+                ephemeral=True,
+            )
+            return
+
+        for ticket_id, proprietaire_id in storage.tickets_actifs.items():
+            salon_existant = guilde.get_channel(ticket_id)
+            if proprietaire_id == interaction.user.id and salon_existant is not None:
+                await interaction.response.send_message(
+                    f"Tu as déjà un ticket ouvert : {salon_existant.mention}",
+                    ephemeral=True,
+                )
+                return
+
         categorie = discord.utils.get(guilde.categories, name="Tickets")
         
         # Créer la catégorie si elle n'existe pas

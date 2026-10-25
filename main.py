@@ -12,8 +12,12 @@ import traceback
 load_dotenv(Path(__file__).with_name(".env"))
 print("Lancement du bot...")
 
-# Configuration des intents
-intents = discord.Intents.all()
+# Intents utilisés par les événements et commandes du bot
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
+intents.presences = True
+intents.reactions = True
 
 # Création du bot
 bot = commands.Bot(
