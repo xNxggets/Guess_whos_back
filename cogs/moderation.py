@@ -187,6 +187,67 @@ class Moderation(commands.Cog):
         )
         
         await interaction.response.send_message(embed=embed)
+
+    @app_commands.command(name="renommer", description="Changer le surnom d'un membre")
+    @app_commands.describe(
+        membre="Le membre dont tu veux changer le surnom",
+        surnom="Le nouveau surnom (32 caractères maximum)",
+    )
+    @app_commands.default_permissions(manage_nicknames=True)
+    @app_commands.guild_only()
+    async def renommer(
+        self,
+        interaction: discord.Interaction,
+        membre: discord.Member,
+        surnom: str,
+    ):
+        """Changer le surnom d'un membre du serveur."""
+        if not await verifier_permissions(interaction, "manage_nicknames"):
+            return
+
+        surnom = surnom.strip()
+        if not surnom:
+            await interaction.response.send_message(
+                "❌ Le surnom ne peut pas être vide.", ephemeral=True
+            )
+            return
+        if len(surnom) > 32:
+            await interaction.response.send_message(
+                "❌ Le surnom ne peut pas dépasser 32 caractères.", ephemeral=True
+            )
+            return
+
+        bot_member = interaction.guild.me
+        if bot_member is None or not bot_member.guild_permissions.manage_nicknames:
+            await interaction.response.send_message(
+                "❌ Le bot doit avoir la permission **Gérer les surnoms**.",
+                ephemeral=True,
+            )
+            return
+
+        try:
+            await membre.edit(
+                nick=surnom,
+                reason=f"Surnom modifié par {interaction.user} via le bot",
+            )
+        except discord.Forbidden:
+            await interaction.response.send_message(
+                "❌ Discord a refusé le changement. Vérifie que le rôle du bot est "
+                "au-dessus de celui du membre et que le bot peut gérer les surnoms.",
+                ephemeral=True,
+            )
+            return
+        except discord.HTTPException:
+            await interaction.response.send_message(
+                "❌ Discord n’a pas pu modifier ce surnom. Réessaie avec un autre nom.",
+                ephemeral=True,
+            )
+            return
+
+        await interaction.response.send_message(
+            f"✅ Le surnom de {membre.mention} a été changé en **{surnom}**.",
+            ephemeral=True,
+        )
     
     @app_commands.command(name="mode_lent", description="Activer le mode lent dans un salon")
     @app_commands.describe(secondes="Nombre de secondes entre chaque message (0 pour désactiver)")

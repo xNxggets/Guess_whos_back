@@ -62,6 +62,7 @@ async def verifier_permissions(interaction, permission):
         "manage_roles": "gérer_les_rôles",
         "manage_channels": "gérer_les_salons",
         "manage_messages": "gérer_les_messages",
+        "manage_nicknames": "gérer_les_surnoms",
         "moderate_members": "modérer_les_membres",
         "kick_members": "expulser_des_membres",
         "ban_members": "bannir_des_membres",

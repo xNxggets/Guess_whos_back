@@ -17,7 +17,7 @@ Bot Discord modulaire en Python avec `discord.py`. Il utilise des commandes slas
 
 | Catégorie | Commandes |
 | --- | --- |
-| Modération | `/avertir`, `/avertissements`, `/effacer_avertissements`, `/mute`, `/demute`, `/expulser`, `/bannir`, `/mode_lent`, `/nettoyer`, `/ajouter_mot_interdit`, `/retirer_mot_interdit`, `/liste_mots_interdits`, `/vider_mots_interdits` |
+| Modération | `/avertir`, `/avertissements`, `/effacer_avertissements`, `/mute`, `/demute`, `/expulser`, `/bannir`, `/renommer`, `/mode_lent`, `/nettoyer`, `/ajouter_mot_interdit`, `/retirer_mot_interdit`, `/liste_mots_interdits`, `/vider_mots_interdits` |
 | Salons | `/creer_salon_textuel`, `/creer_salon_vocal`, `/creer_categorie`, `/supprimer_salon_textuel`, `/supprimer_salon_vocal`, `/supprimer_categorie` |
 | Tickets | `/creer_ticket`, `/fermer_ticket` |
 | Utilitaires | `/rappel`, `/calculer` |
@@ -34,7 +34,7 @@ Les commandes préfixées par `!` sont aussi disponibles : `!invite`, `!test`. `
 
 ### Permissions
 
-Les commandes de modération vérifient la permission adaptée au rôle de la personne qui les utilise. La gestion des salons requiert **Gérer les salons** pour l'utilisateur et pour le bot. Les commandes de suppression demandent une confirmation. La fermeture d'un ticket est réservée à son créateur ou à un administrateur.
+Les commandes de modération vérifient la permission adaptée au rôle de la personne qui les utilise. `/renommer` requiert **Gérer les surnoms** pour le modérateur et le bot; le rôle du bot doit aussi être au-dessus du membre à renommer. La gestion des salons requiert **Gérer les salons** pour l'utilisateur et pour le bot. Les commandes de suppression demandent une confirmation. La fermeture d'un ticket est réservée à son créateur ou à un administrateur.
 
 Accorde au bot seulement les permissions nécessaires aux fonctionnalités activées. Les commandes de modération ont notamment besoin des permissions Discord correspondantes (gérer les messages, modérer, expulser, bannir); les outils de salons, tickets et rôles nécessitent respectivement gérer les salons ou gérer les rôles.
 

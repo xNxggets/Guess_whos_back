@@ -188,6 +188,7 @@ async def aide(interaction: discord.Interaction):
             ("demute", "Retire le mute temporaire d’un membre.", "moderate_members"),
             ("expulser", "Expulse un membre du serveur.", "kick_members"),
             ("bannir", "Bannit un membre du serveur.", "ban_members"),
+            ("renommer", "Change le surnom d’un membre du serveur.", "manage_nicknames"),
             ("mode_lent", "Règle le délai entre les messages d’un salon.", "manage_channels"),
             ("nettoyer", "Supprime jusqu’à 100 messages du salon courant.", "manage_messages"),
             ("ajouter_mot_interdit", "Ajoute un mot au filtre automatique du serveur.", "manage_guild"),
