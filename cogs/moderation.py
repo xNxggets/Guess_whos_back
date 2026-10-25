@@ -193,7 +193,6 @@ class Moderation(commands.Cog):
         membre="Le membre dont tu veux changer le surnom",
         surnom="Le nouveau surnom (32 caractères maximum)",
     )
-    @app_commands.default_permissions(manage_nicknames=True)
     @app_commands.guild_only()
     async def renommer(
         self,
