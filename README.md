@@ -1,4 +1,4 @@
-# Guess Who's Back — bot Discord
+# Guess Who's Back - bot Discord
 
 Bot Discord modulaire en Python avec `discord.py`. Il utilise des commandes slash, des événements de serveur et un fichier JSON local pour conserver les données.
 
