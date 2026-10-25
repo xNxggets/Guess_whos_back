@@ -203,6 +203,19 @@ class Moderation(commands.Cog):
             await interaction.response.send_message(
                 f"✅ Mode lent activé : {secondes} seconde(s) entre chaque message"
             )
+
+    @app_commands.command(
+        name="desactiver_mode_lent",
+        description="Désactiver le mode lent dans le salon actuel",
+    )
+    @app_commands.default_permissions(manage_channels=True)
+    async def desactiver_mode_lent(self, interaction: discord.Interaction):
+        """Désactiver le mode lent du salon actuel."""
+        if not await verifier_permissions(interaction, "manage_channels"):
+            return
+
+        await interaction.channel.edit(slowmode_delay=0)
+        await interaction.response.send_message("✅ Mode lent désactivé dans ce salon.")
     
     @app_commands.command(name="nettoyer", description="Supprimer plusieurs messages")
     @app_commands.describe(nombre="Nombre de messages à supprimer (max 100)")
