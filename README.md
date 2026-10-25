@@ -17,7 +17,7 @@ Bot Discord modulaire en Python avec `discord.py`. Il utilise des commandes slas
 
 | Catégorie | Commandes |
 | --- | --- |
-| Modération | `/avertir`, `/avertissements`, `/effacer_avertissements`, `/mute`, `/demute`, `/expulser`, `/bannir`, `/mode_lent`, `/desactiver_mode_lent`, `/nettoyer`, `/ajouter_mot_interdit`, `/retirer_mot_interdit`, `/liste_mots_interdits`, `/vider_mots_interdits` |
+| Modération | `/avertir`, `/avertissements`, `/effacer_avertissements`, `/mute`, `/demute`, `/expulser`, `/bannir`, `/mode_lent`, `/nettoyer`, `/ajouter_mot_interdit`, `/retirer_mot_interdit`, `/liste_mots_interdits`, `/vider_mots_interdits` |
 | Salons | `/creer_salon_textuel`, `/creer_salon_vocal`, `/creer_categorie`, `/supprimer_salon_textuel`, `/supprimer_salon_vocal`, `/supprimer_categorie` |
 | Tickets | `/creer_ticket`, `/fermer_ticket` |
 | Utilitaires | `/rappel`, `/calculer` |
