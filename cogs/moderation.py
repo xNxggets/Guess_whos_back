@@ -208,7 +208,6 @@ class Moderation(commands.Cog):
         name="desactiver_mode_lent",
         description="Désactiver le mode lent dans le salon actuel",
     )
-    @app_commands.default_permissions(manage_channels=True)
     async def desactiver_mode_lent(self, interaction: discord.Interaction):
         """Désactiver le mode lent du salon actuel."""
         if not await verifier_permissions(interaction, "manage_channels"):
