@@ -304,7 +304,6 @@ async def invite(ctx):
         ban_members=True,
         
         # Autres
-        use_slash_commands=True,
         create_public_threads=True,
         create_private_threads=True,
         send_messages_in_threads=True,
