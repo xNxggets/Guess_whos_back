@@ -1,4 +1,4 @@
-'''Partie des utilitaires pour le bot Discord Guess Who's Back, incluant 
+'''Utilitaires de GHOST MANAGER pour le bot Discord, incluant
 la création d'embeds, le calcul de niveaux, la vérification des permissions, 
 la gestion des dates et heures, ainsi que les fonctions liées aux emojis.'''
 

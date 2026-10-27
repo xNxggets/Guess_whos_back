@@ -1,4 +1,4 @@
-# Les dépendances nécessaires pour exécuter le bot Discord Guess Who's Back
+# Dépendances nécessaires au bot Discord GHOST MANAGER
 
 discord.py>=2.3.0
 python-dotenv>=1.0.0

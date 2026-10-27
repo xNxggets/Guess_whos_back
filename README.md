@@ -1,4 +1,4 @@
-# Guess Who's Back - bot Discord
+# GHOST MANAGER — bot Discord
 
 Bot Discord modulaire en Python avec `discord.py`. Il utilise des commandes slash, des événements de serveur et un fichier JSON local pour conserver les données.
 
@@ -43,8 +43,8 @@ Accorde au bot seulement les permissions nécessaires aux fonctionnalités activ
 Prérequis : Git et Python 3.10 ou plus récent.
 
 ```powershell
-git clone https://github.com/xNxggets/Guess_whos_back.git
-cd Guess_whos_back
+git clone https://github.com/xNxggets/Guess_whos_back.git ghost-manager
+cd ghost-manager
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt

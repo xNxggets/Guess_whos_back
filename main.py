@@ -1,4 +1,4 @@
-# Partie principale du bot discord Guess Who's Back gérant le démarrage, les évènements de connexion, et le chargement des cogs.
+# Partie principale de GHOST MANAGER gérant le démarrage, les événements de connexion et le chargement des cogs.
 
 import discord
 import os
@@ -79,7 +79,7 @@ async def on_ready():
     await bot.change_presence(
         activity=discord.Activity(
             type=discord.ActivityType.playing,
-            name="pour afficher les commandes : /aide"
+            name="GHOST MANAGER | /aide"
         ),
         status=discord.Status.online
     )
