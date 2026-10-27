@@ -79,7 +79,7 @@ async def on_ready():
     await bot.change_presence(
         activity=discord.Activity(
             type=discord.ActivityType.playing,
-            name="GHOST MANAGER | /aide"
+            name="Surveille votre serveur 👻"
         ),
         status=discord.Status.online
     )
